@@ -9,7 +9,7 @@
   "author": "OSHistory",
   "license": "ISC",
   "dependencies": {
-    "ol": "git://github.com/openlayers/openlayers.git#v5.3.0",
-    "typescript": "^3.1.6"
+    "ol": "git://github.com/openlayers/openlayers.git#65a10db4328ff198aaf66fa3e603ea6dc835eada",
+    "typescript": "3.1.6"
   }
 }

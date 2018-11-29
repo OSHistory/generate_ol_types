@@ -10,18 +10,17 @@
         "original": "forEachFeatureAtCoordinate(coordinate: any,  frameState: any,  hitTolerance: any,  callback: any,  thisArg: any): any;",
         "replacement": "forEachFeatureAtCoordinate(coordinate: any,  frameState: any,  hitTolerance: any,  callback: any,  thisArg?: any): any;",
         "comment": "Make last value optional to avoid clashes with base class"
-    },
-    {
-        "file": "renderer/webgl/VectorLayer.d.ts",
-        "original": "forEachFeatureAtCoordinate(coordinate: any,  frameState: any,  hitTolerance: any,  callback: any,  thisArg: any): any;",
-        "replacement": "forEachFeatureAtCoordinate(coordinate: any,  frameState: any,  hitTolerance: any,  callback: any,  thisArg?: any): any;",
-        "comment": "Make last value optional to avoid clashes with base class"
-    },    
+    },  
     {
         "file": "View.d.ts",
         "original": "animate(var_args: any): void;",
         "replacement": "animate(...var_args: any[]): void;",
         "comment": "Optional number of arguments"
+    },
+    {
+        "file": "layer/Heatmap.d.ts",
+        "original": "createRenderer(): WebGLPointsLayerRenderer",
+        "replacement": "createRenderer(): any",
+        "comment": "Don't use specific return type"
     }
-
 ]

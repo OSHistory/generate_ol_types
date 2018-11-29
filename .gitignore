@@ -1,0 +1,6 @@
+node_modules/
+@types/
+@types_tmp/
+src/
+*zip
+package-lock.json

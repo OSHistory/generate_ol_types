@@ -1,0 +1,15 @@
+{
+  "name": "generate_ol_types",
+  "version": "1.0.0",
+  "description": "Generate typescript-definition files from the openlayers source code",
+  "main": "generate-types.sh",
+  "scripts": {
+    "test": "find ./@types/ol/ -name \"*d.ts\" -print0 | xargs -0 tsc"
+  },
+  "author": "OSHistory",
+  "license": "ISC",
+  "dependencies": {
+    "ol": "git://github.com/openlayers/openlayers.git#v5.3.0",
+    "typescript": "^3.1.6"
+  }
+}

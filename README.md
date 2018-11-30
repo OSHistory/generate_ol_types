@@ -33,6 +33,12 @@ find ./@types/ol/ -name "*d.ts" -print0 | xargs -0 tsc
 
 ## TODO
 
-The comments before functions should be parsed and be used 
-to provide type-information
-
+ - Almost all function parameters are typed with any, should parse the comments before functions to provide 
+ better type-checking in applications
+- Events are not compiled by the initial 
+typescript compilation process, 
+and are not exported as a type, 
+should check for custom events in the 
+original js source and export it for 
+consumption (see `ol/interaction/draw` as
+an example)

@@ -211,9 +211,27 @@ def fix_duplicate_params(content):
         content = content.replace(fun_def, new_fun_def)
     return content
 
+def resolve_generics(content):
+    generics = []
+    class_declarations = re.findall("/\*\*.*?@classdesc.*?\*/[ \n]*?declare class [a-zA-Z]* ", content, re.DOTALL)
+    for class_declaration in class_declarations:
+        if "@template T" in class_declaration:
+            print("IS GENERIC")
+            last_line = class_declaration.rpartition("\n")[2]
+            class_name = last_line.strip().rpartition(" ")[2]
+            print(class_name)
+            generics.append(class_name)
+            content = content.replace(last_line, last_line.strip() + "<T> ")
+
+    return content, generics
+
 TS_BASE = "./@types/ol/"
 
 fw = os.walk(TS_BASE)
+
+# collect all generic classes for a second iteration 
+# to add generic typing to extending classes 
+generic_classes = []
 
 while True: 
     try:
@@ -235,6 +253,9 @@ while True:
                 cont = mark_optional(cont)
                 cont = no_never_returns(cont)
                 cont = no_this_returns(cont)
+                cont, generics = resolve_generics(cont)
+                if len(generics):
+                    generic_classes.extend(generics)
                 # Problem: typedefs can be cut off during tsc-compilation
                 # (-> see View.d.ts and View.js for an example)
                 interfaces, interface_names = typedef_to_interface(js_cont)
@@ -246,6 +267,38 @@ while True:
                     fh_out.write(cont)
     except StopIteration:
         break
+
+
+## Second iteration to check if class extends a generic
+fw = os.walk(TS_BASE)
+print("Adding generic typing to extending classes")
+while True: 
+    try:
+        curr_dir_info = next(fw)
+        for _file in curr_dir_info[2]:
+            if _file.endswith("d.ts"):
+                ts_path = os.path.join(curr_dir_info[0], _file)
+                with open(ts_path) as fh:
+                    cont = fh.read()
+                rewrite = False
+                extending_declarations = re.findall("declare class [a-zA-Z]* extends [a-zA-Z]* ", cont, re.MULTILINE)
+                for declaration in extending_declarations:
+                    decl_class = declaration.split(" ")[2]
+                    base_class = declaration.split(" ")[4]
+                    if base_class in generic_classes:
+                        print(declaration)
+                        new_declaration = declaration.replace(base_class, base_class + "<T>")
+                        new_declaration = new_declaration.replace(decl_class, decl_class + "<T>")
+                        print(new_declaration)
+                        cont = cont.replace(declaration, new_declaration)
+                        rewrite = True
+                if rewrite:
+                    with open(ts_path, "w+") as fh_out:
+                        fh_out.write(cont)
+
+    except StopIteration:
+        break
+
 
 ## Apply some manual fixes 
 print("Applying manual fixes")

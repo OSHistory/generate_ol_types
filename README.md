@@ -1,4 +1,6 @@
+# !!!!!!!!!!!!!!!!!!!!!!!!!!
 # THIS PROJECT IS DEPRECATED
+# !!!!!!!!!!!!!!!!!!!!!!!!!!
 
 I suggest using the typings from https://github.com/hanreev/types-ol 
 They have been merged to the DefinetlyTyped Project and can be easily 
